@@ -2,6 +2,7 @@ package be.joengenduvel.codenature.math;
 
 import org.junit.jupiter.api.Test;
 
+import static java.lang.Math.round;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class Vector2DTest {
@@ -24,7 +25,7 @@ class Vector2DTest {
 
     @Test
     void getAngle135() {
-        assertThat(new Vector2D(-1, 1).getAngle()).isEqualTo(3 * Math.PI / 4);
+        assertThat(round(new Vector2D(-1, 1).getAngle())).isEqualTo(round(3 * Math.PI / 4));
     }
 
     @Test

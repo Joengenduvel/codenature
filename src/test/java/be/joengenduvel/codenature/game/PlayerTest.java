@@ -19,6 +19,7 @@ class PlayerTest {
         Player player = getPlayer(speed);
 
         player.move(new KeyBinding(true, false, false, false));
+        player.getSprite().move(0);
 
         assertThat(player.getSprite().getSpeed()).isEqualTo(new Vector2D(1,1));
     }
@@ -29,6 +30,7 @@ class PlayerTest {
         Player player = getPlayer(speed);
 
         player.move(new KeyBinding(false, true, false, false));
+        player.getSprite().move(0);
 
         assertThat(player.getSprite().getSpeed()).isEqualTo(new Vector2D(1,-1));
     }
@@ -39,6 +41,7 @@ class PlayerTest {
         Player player = getPlayer(speed);
 
         player.move(new KeyBinding(false, false, true, false));
+        player.getSprite().move(0);
 
         assertThat(player.getSprite().getSpeed()).isEqualTo(new Vector2D(2,0));
     }
@@ -49,6 +52,7 @@ class PlayerTest {
         Player player = getPlayer(speed);
 
         player.move(new KeyBinding(false, false, false, true));
+        player.getSprite().move(0);
 
         assertThat(player.getSprite().getSpeed()).isEqualTo(new Vector2D(0,0));
     }
