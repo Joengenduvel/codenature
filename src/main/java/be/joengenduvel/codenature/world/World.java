@@ -6,7 +6,6 @@ import be.joengenduvel.codenature.world.forces.Force;
 import be.joengenduvel.codenature.world.interactions.ElasticCollision;
 import be.joengenduvel.codenature.world.interactions.GravitationalPull;
 import be.joengenduvel.codenature.world.interactions.Interaction;
-import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Component
 public class World {
     private static final Vector2D WORLD_SIZE = new Vector2D(300, 300);
     private static final double SPEED_FACTOR = 0.05;

@@ -1,5 +1,6 @@
 package be.joengenduvel.codenature.web;
 
+import be.joengenduvel.codenature.game.Game;
 import be.joengenduvel.codenature.world.World;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,8 +11,8 @@ public class WorldController {
 
     private final World world;
 
-    public WorldController(World world) {
-        this.world = world;
+    public WorldController(Game game) {
+        this.world = game.getWorld();
     }
 
     @RequestMapping(produces = "application/json")
