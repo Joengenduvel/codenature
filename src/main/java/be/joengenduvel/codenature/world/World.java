@@ -1,6 +1,11 @@
 package be.joengenduvel.codenature.world;
 
 import be.joengenduvel.codenature.math.Vector2D;
+import be.joengenduvel.codenature.world.forces.Drag;
+import be.joengenduvel.codenature.world.forces.Force;
+import be.joengenduvel.codenature.world.interactions.ElasticCollision;
+import be.joengenduvel.codenature.world.interactions.GravitationalPull;
+import be.joengenduvel.codenature.world.interactions.Interaction;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
@@ -13,13 +18,24 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class World {
     private static final Vector2D WORLD_SIZE = new Vector2D(300, 300);
     private static final double SPEED_FACTOR = 0.05;
+    private static final double GRAVITATIONAL_CONSTANT = 6.6743E-11;
 
     private ZonedDateTime previousTick;
 
     private final List<Sprite> sprites;
+    private final List<Interaction> interactionFunctions;
+    private final List<Force> forces;
 
     public World() {
         sprites = new CopyOnWriteArrayList<>();
+
+        interactionFunctions = new ArrayList<>(2);
+        interactionFunctions.add(new ElasticCollision());
+        interactionFunctions.add(new GravitationalPull(GRAVITATIONAL_CONSTANT));
+
+        forces = new ArrayList<>(1);
+        forces.add(new Drag(0.01));
+
         sprites.add(new Sprite(
                 new Vector2D(150,150),
                 Vector2D.ZERO,
@@ -43,9 +59,10 @@ public class World {
         long deltaT = ChronoUnit.MILLIS.between(previousTick, now);
         sprites.forEach(s -> {
             s.move(deltaT*SPEED_FACTOR);
-            s.applyDrag(0.01);
             wrapAroundCornersOfTheWorld(s);
-            checkCollisions(s);
+            //TODO: make parallel
+            forces.forEach(f -> f.apply(s));
+            checkInteractions(s);
         });
         previousTick = now;
     }
@@ -82,12 +99,11 @@ public class World {
     }
 
 
-    private void checkCollisions(Sprite s) {
+    private void checkInteractions(Sprite s) {
         sprites.forEach(os -> {
             if(os != s){
-                //TODO: move these function to the world
-                os.collidesWith(s);
-                os.applyGravitationalPull(s);
+                //TODO: make parallel
+                interactionFunctions.forEach(f -> f.apply(os, s));
             }
         });
     }
