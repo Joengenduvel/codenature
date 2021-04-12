@@ -10,7 +10,7 @@ deploy:
   on:
     branches:
       only:
-        - main
+        - "main"
 
 before_install:
   - chmod +x mvnw
