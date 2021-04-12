@@ -1,13 +1,14 @@
+os: linux
+dist: xenial
 language: java
 
 before_deploy:
-  - "mvnw -B -V package"
+  - "./mvnw -B -V package"
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - "docker build -t joengenduvel/codenature ."
 deploy:
   provider: script
   script: "docker push joengenduvel/codenature"
-  skip_cleanup: true
   on:
     branch: "main"
 
