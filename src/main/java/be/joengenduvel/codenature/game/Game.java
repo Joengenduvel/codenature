@@ -2,7 +2,7 @@ package be.joengenduvel.codenature.game;
 
 import be.joengenduvel.codenature.math.Vector2D;
 import be.joengenduvel.codenature.world.Sprite;
-import be.joengenduvel.codenature.world.World;
+import be.joengenduvel.codenature.world.PhysicsWorld;
 import lombok.Getter;
 
 import java.time.ZonedDateTime;
@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class Game {
     @Getter
@@ -22,22 +21,21 @@ public class Game {
     @Getter
     private final String name;
     @Getter
-    private final World world;
+    private final PhysicsWorld world;
 
     private final Map<UUID, Player> players = new ConcurrentHashMap<>(0);
 
     public Game(String name) {
         this.id = UUID.randomUUID();
         this.creationTime = ZonedDateTime.now();
-        this.world = new World();
+        this.world = new PhysicsWorld();
         this.name = name;
     }
 
-    //TODO: ask for players name
-    public UUID newPlayer() {
+    public UUID newPlayer(String name) {
         Player player = new Player(
                 UUID.randomUUID(),
-                "Player " + (players.size() + 1),
+                name,
                 new Sprite(
                         new Vector2D(players.size() * 10, players.size() * 10),
                         new Vector2D(players.size(), players.size()),

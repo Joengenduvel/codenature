@@ -3,6 +3,7 @@ package be.joengenduvel.codenature.web;
 import be.joengenduvel.codenature.game.Game;
 import be.joengenduvel.codenature.game.GameManager;
 import be.joengenduvel.codenature.game.Player;
+import be.joengenduvel.codenature.web.models.JoinRequest;
 import be.joengenduvel.codenature.web.models.JoinResponse;
 import be.joengenduvel.codenature.web.models.KeyBinding;
 import be.joengenduvel.codenature.web.models.PlayerResponse;
@@ -53,10 +54,10 @@ public class PlayerController {
 
 
     @PostMapping
-    public ResponseEntity<JoinResponse> join(@PathVariable String gameId) {
+    public ResponseEntity<JoinResponse> join(@PathVariable String gameId, @RequestBody JoinRequest joinRequest) {
         UUID gameUUID = UUID.fromString(gameId);
         Optional<Game> game = gameManager.getGame(gameUUID);
-        return game.map(value -> ResponseEntity.ok().body(new JoinResponse(value.newPlayer()))).orElseGet(() -> ResponseEntity.notFound().build());
+        return game.map(value -> ResponseEntity.ok().body(new JoinResponse(value.newPlayer(joinRequest.getName())))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping(value = "/{playerId}")

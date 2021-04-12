@@ -2,7 +2,7 @@ function drawPlayer(player) {
     const x = player.position.x;
     const y = player.position.y;
     const speed = player.speed.magnitude * 20;
-    const angle = player.speed.angle;
+    const angle = player.angle;
 
     context.save();
     context.translate(x,y);

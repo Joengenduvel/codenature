@@ -9,8 +9,13 @@ public class SpriteRepresentation {
     Vector2D position;
     Vector2D speed;
     long mass;
+    double angle;
 
     public static SpriteRepresentation of(Sprite sprite) {
-        return new SpriteRepresentation(sprite.getPosition(), sprite.getSpeed(), sprite.getMass());
+        return new SpriteRepresentation(
+                sprite.getPosition(),
+                sprite.getSpeed(),
+                sprite.getMass(),
+                sprite.getAngle());
     }
 }

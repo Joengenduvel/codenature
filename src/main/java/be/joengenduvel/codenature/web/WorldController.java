@@ -2,8 +2,9 @@ package be.joengenduvel.codenature.web;
 
 import be.joengenduvel.codenature.game.Game;
 import be.joengenduvel.codenature.game.GameManager;
+import be.joengenduvel.codenature.game.Player;
 import be.joengenduvel.codenature.web.models.WorldRepresentation;
-import be.joengenduvel.codenature.world.World;
+import be.joengenduvel.codenature.world.PhysicsWorld;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class WorldController {
         UUID gameUUID = UUID.fromString(gameId);
         Optional<Game> game = gameManager.getGame(gameUUID);
         if (game.isPresent()){
-            World world = game.get().getWorld();
+            PhysicsWorld world = game.get().getWorld();
             world.tick();
             return ResponseEntity.ok().body(WorldRepresentation.of(world));
         }
@@ -39,10 +40,12 @@ public class WorldController {
         UUID playerUUID = UUID.fromString(playerId);
         Optional<Game> game = gameManager.getGame(gameUUID);
         if (game.isPresent()){
-            World world = game.get().getWorld();
+            PhysicsWorld world = game.get().getWorld();
             world.tick();
-            //TODO: transform world
-            return ResponseEntity.ok().body(WorldRepresentation.of(world));
+            Optional<Player> player = game.get().getPlayer(playerUUID);
+            if(player.isPresent()){
+                return ResponseEntity.ok().body(WorldRepresentation.of(world.getLocalizedWorld(player.get().getSprite())));
+            }
         }
         return ResponseEntity.notFound().build();
     }

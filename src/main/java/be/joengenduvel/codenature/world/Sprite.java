@@ -36,4 +36,8 @@ public class Sprite {
         speed = speed.add(acceleration);
         acceleration = Vector2D.ZERO;
     }
+
+    public double getAngle() {
+        return speed.getAngle();
+    }
 }

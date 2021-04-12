@@ -1,5 +1,6 @@
 package be.joengenduvel.codenature.web.models;
 
+import be.joengenduvel.codenature.world.PhysicsWorld;
 import be.joengenduvel.codenature.world.World;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
