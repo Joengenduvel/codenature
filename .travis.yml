@@ -1,4 +1,19 @@
 language: java
 
+before_deploy:
+  - "mvnw -B -V package"
+  - "docker build -t joengenduvel/codenature ."
+deploy:
+  provider: script
+  script: "echo upload here"
+  skip_cleanup: true
+
 before_install:
   - chmod +x mvnw
+
+before_cache:
+  - rm -f  $HOME/.m2/
+
+cache:
+  directories:
+    - $HOME/.m2/
