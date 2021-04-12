@@ -1,4 +1,4 @@
-package be.joengenduvel.codenature.web;
+package be.joengenduvel.codenature.web.models;
 
 import be.joengenduvel.codenature.world.World;
 import lombok.AccessLevel;
@@ -16,11 +16,10 @@ public class WorldRepresentation {
     private final List<SpriteRepresentation> players;
 
     public static WorldRepresentation of(World world){
-        WorldRepresentation representation = new WorldRepresentation(
+        return new WorldRepresentation(
                 (long)world.getSize().getX(),
                 (long)world.getSize().getY(),
                 world.getSprites().stream().map(SpriteRepresentation::of).collect(Collectors.toList())
         );
-        return representation;
     }
 }

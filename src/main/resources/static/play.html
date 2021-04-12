@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>play</title>
+</head>
+<body>
+<h1 id="name"></h1>
+<canvas id="world">
+</canvas>
+
+<script lang="javascript" src="drawing.js"></script>
+<script lang="javascript">
+    const canvas = document.getElementById("world");
+    const context = canvas.getContext('2d');
+    const title = document.getElementById("name");
+
+    const gameId = new URLSearchParams(window.location.search).get('gameId');
+    const playerId = new URLSearchParams(window.location.search).get('playerId');
+
+    function fetchPlayDetails(){
+        fetch(`/games/${gameId}/players/${playerId}`)
+            .then(response => response.json())
+            .then(player => {
+                fetch(`/games/${gameId}`)
+                    .then(response => response.json())
+                .then(game => {
+                    title.textContent = `${player.name}@${game.name}`;
+                });
+
+            });
+    }
+
+
+    async function drawWorld() {
+        fetch(`/games/${gameId}/players/${playerId}/world`)
+            .then(response => response.json())
+            .then(data => reponseReceived(data))
+            .then(await new Promise(r => setTimeout(r, 2)))
+            .then(window.requestAnimationFrame(drawWorld));
+    }
+
+    var keyboardEventListener = function (event) {
+        console.log(event.key);
+        var keyBindings = {};
+        if (event.key === 'ArrowUp') {
+            console.log('Up was pressed');
+            keyBindings.up = true;
+        } else if (event.key === 'ArrowDown') {
+            console.log('Down was pressed');
+            keyBindings.down = true;
+        }
+        if (event.key === 'ArrowLeft') {
+            console.log('Left was pressed');
+            keyBindings.left = true;
+        } else if (event.key === 'ArrowRight') {
+            console.log('Right was pressed');
+            keyBindings.right = true;
+        }
+        fetch(`/games/${gameId}/players/${playerId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(keyBindings)
+        })
+    }
+
+    document.addEventListener('keydown', keyboardEventListener)
+
+    fetchPlayDetails();
+    sizeCanvas();
+    drawWorld();
+</script>
+</body>
+</html>

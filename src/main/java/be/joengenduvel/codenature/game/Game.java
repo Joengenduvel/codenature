@@ -4,25 +4,36 @@ import be.joengenduvel.codenature.math.Vector2D;
 import be.joengenduvel.codenature.world.Sprite;
 import be.joengenduvel.codenature.world.World;
 import lombok.Getter;
-import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-@Component
 public class Game {
+    @Getter
+    private final UUID id;
+    @Getter
+    private ZonedDateTime creationTime;
+    @Getter
+    private final String name;
     @Getter
     private final World world;
 
     private final Map<UUID, Player> players = new ConcurrentHashMap<>(0);
 
-    public Game() {
+    public Game(String name) {
+        this.id = UUID.randomUUID();
+        this.creationTime = ZonedDateTime.now();
         this.world = new World();
+        this.name = name;
     }
 
+    //TODO: ask for players name
     public UUID newPlayer() {
         Player player = new Player(
                 UUID.randomUUID(),
@@ -53,5 +64,9 @@ public class Game {
 
     public Optional<Player> getPlayer(UUID playerId) {
         return Optional.ofNullable(players.get(playerId));
+    }
+
+    public List<Player> getPlayers(){
+        return new ArrayList<>(players.values());
     }
 }

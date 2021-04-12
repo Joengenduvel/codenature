@@ -1,4 +1,4 @@
-package be.joengenduvel.codenature.web;
+package be.joengenduvel.codenature.web.models;
 
 import be.joengenduvel.codenature.math.Vector2D;
 import be.joengenduvel.codenature.world.Sprite;

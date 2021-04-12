@@ -1,127 +1,42 @@
 <html lang="en">
 <head>
-    <style>
-        #world {
-            /*width: 300px;*/
-            /*height: 300px;*/
-            border: black 5px groove;
-        }
-    </style>
+    <title>Code Nature</title>
 </head>
 <body>
-<h1>
-    Code Nature
-</h1>
-<div>
-    <canvas id="world">
-    </canvas>
-</div>
-<div>
-    <button onclick="join()">Join</button>
-    <button onclick="leave()">Leave</button>
-</div>
-<script language="JavaScript">
-    const canvas = document.getElementById("world");
-    const context = canvas.getContext('2d');
-    let uuid;
+<h1>Code Nature</h1>
+<p>A simple 2d physics game</p>
 
-    function drawPlayer(player) {
-        const x = player.position.x;
-        const y = player.position.y;
-        const speed = player.speed.magnitude * 20;
-        const angle = player.speed.angle;
+<h2>Active Games</h2>
+<ul id="active-games">
+</ul>
+<button onclick="newGame()">New Game</button>
 
-        context.save();
-        context.translate(x,y);
-        context.rotate(angle);
-
-        context.beginPath();
-        context.rect(5, -2 , 4, 4);
-        context.rect(-5, -5 , 10, 10);
-        context.fill();
-
-
-
-        context.beginPath();
-        context.strokeStyle = 'red';
-        context.moveTo(0,0)
-        context.lineTo(speed, 0);
-        context.stroke();
-
-
-        context.restore();
-    }
-
-    function reponseReceived(data) {
-        context.beginPath();
-        context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-        data.players.forEach(player => drawPlayer(player));
-    }
-
-    async function drawWorld() {
-            fetch('/world')
-                .then(response => response.json())
-                .then(data => reponseReceived(data))
-                .then(window.requestAnimationFrame(drawWorld));
-
-    }
-
-    function sizeCanvas() {
-        canvas.width = 300;
-        canvas.height = 300;
-
-        // flip vertically
-        context.translate(canvas.width / 2, canvas.height / 2);
-        context.scale(1, -1);
-        context.translate(-canvas.width / 2, -canvas.height / 2);
-        context.save();
-    }
-
-    var keyboardEventListener = function (event) {
-        console.log(event.key);
-        var keyBindings = {};
-        if (event.key === 'ArrowUp') {
-            console.log('Up was pressed');
-            keyBindings.up = true;
-        } else if (event.key === 'ArrowDown') {
-            console.log('Down was pressed');
-            keyBindings.down = true;
-        }
-        if (event.key === 'ArrowLeft') {
-            console.log('Left was pressed');
-            keyBindings.left = true;
-        } else if (event.key === 'ArrowRight') {
-            console.log('Right was pressed');
-            keyBindings.right = true;
-        }
-        fetch('/player/' + uuid, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(keyBindings)
-        })
-    }
-
-
-
-    function join() {
-        fetch('/game', {method: 'POST'})
+<script lang="javascript">
+    function updateActiveGames() {
+        const gamesList = document.getElementById("active-games");
+        fetch('/games')
             .then(response => response.json())
-            .then(data => uuid = data.id)
-            .then(document.addEventListener('keydown', keyboardEventListener))
-            .then(drawWorld());
+            .then(data => {
+                let innerHtml = '';
+                data.forEach(game => {
+                    innerHtml += `<li><a href="game.html?gameId=${game.id}">${game.name}</a><button onclick="endGame('${game.id}')">X</button></li>`;
+                });
+                gamesList.innerHTML = innerHtml;
+            });
     }
 
-    function leave() {
-        fetch('/game', {method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(uuid)})
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .then(document.removeEventListener('keydown', keyboardEventListener))
-            .then(uuid = null)
-            .then(drawWorld());
+    function newGame(){
+        var name = prompt("Please enter the name of the game", "Test");
+        fetch('/games', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ name: name })})
+        .then(updateActiveGames);
     }
 
-    sizeCanvas();
+    function endGame(id){
+        fetch('/games/'+id, {method: 'DELETE'})
+            .then(updateActiveGames);
+    }
 
+    updateActiveGames();
 </script>
 </body>
 </html>

@@ -1,0 +1,70 @@
+<html>
+<head>
+    <title>Game</title>
+</head>
+<body>
+<h1 id="name"></h1>
+<div>
+    <h2>World</h2>
+    <canvas id="world">
+    </canvas>
+</div>
+
+<div>
+    <h2>Players</h2>
+    <ul id="players">
+
+    </ul>
+    <button onclick="joinGame()">Join</button>
+</div>
+
+<script lang="javascript" src="drawing.js"></script>
+<script lang="javascript">
+    const canvas = document.getElementById("world");
+    const context = canvas.getContext('2d');
+    const title = document.getElementById("name");
+    const playersList = document.getElementById("players");
+
+    function fetchGameDetails(){
+        fetch(`/games/${gameId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.title = data.name;
+                title.textContent = data.name;
+            });
+
+        fetch(`/games/${gameId}/players/`)
+            .then(response => response.json())
+            .then(data => {
+                let innerHtml = '';
+                data.forEach(player => {
+                    innerHtml += `<li><a href="play.html?gameId=${gameId}&playerId=${player.id}">${player.name}</a></li>`;
+                });
+                playersList.innerHTML = innerHtml;
+            });
+    }
+
+    function joinGame(){
+        var name = prompt("Please enter your name", "Jhon Doe");
+        fetch(`/games/${gameId}/players/`, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ name: name })})
+            .then(fetchGameDetails);
+    }
+
+    async function drawWorld() {
+        fetch('/games/'+gameId+ '/world')
+            .then(response => response.json())
+            .then(data => reponseReceived(data))
+            .then(await new Promise(r => setTimeout(r, 2000)))
+            .then(window.requestAnimationFrame(drawWorld));
+
+    }
+
+
+    const gameId = new URLSearchParams(window.location.search).get('gameId');
+
+    fetchGameDetails();
+    sizeCanvas();
+    drawWorld();
+</script>
+</body>
+</html>
