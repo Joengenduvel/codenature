@@ -47,6 +47,10 @@ public class PhysicsWorld implements World {
         sprites.add(sprite);
     }
 
+    public void removeSprite(Sprite sprite) {
+        sprites.remove(sprite);
+    }
+
     public void tick(){
         if(previousTick == null){
             //only at first tick
@@ -111,4 +115,5 @@ public class PhysicsWorld implements World {
             }
         });
     }
+
 }

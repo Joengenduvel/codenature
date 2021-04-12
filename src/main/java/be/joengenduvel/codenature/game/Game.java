@@ -53,6 +53,7 @@ public class Game {
     }
 
     public String removePlayer(UUID playerId) {
+        world.removeSprite(players.get(playerId).getSprite());
         players.remove(playerId);
         if(players.isEmpty()){
             //stopTimer();

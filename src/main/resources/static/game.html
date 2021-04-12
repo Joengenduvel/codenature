@@ -38,7 +38,7 @@
             .then(data => {
                 let innerHtml = '';
                 data.forEach(player => {
-                    innerHtml += `<li><a href="play.html?gameId=${gameId}&playerId=${player.id}">${player.name}</a></li>`;
+                    innerHtml += `<li><a href="play.html?gameId=${gameId}&playerId=${player.id}">${player.name}</a><button onclick="leaveGame('${player.id}')">X</button> </li>`;
                 });
                 playersList.innerHTML = innerHtml;
             });
@@ -50,12 +50,18 @@
             .then(fetchGameDetails);
     }
 
+    function leaveGame(playerId){
+        fetch(`/games/${gameId}/players/${playerId}`, {method: 'DELETE'})
+            .then(fetchGameDetails);
+    }
+
     async function drawWorld() {
         fetch('/games/'+gameId+ '/world')
             .then(response => response.json())
             .then(data => reponseReceived(data))
             .then(await new Promise(r => setTimeout(r, 2000)))
-            .then(window.requestAnimationFrame(drawWorld));
+            .then(window.requestAnimationFrame(drawWorld))
+            .catch(() => location.pathname = '/');
 
     }
 

@@ -16,15 +16,15 @@
     const gameId = new URLSearchParams(window.location.search).get('gameId');
     const playerId = new URLSearchParams(window.location.search).get('playerId');
 
-    function fetchPlayDetails(){
+    function fetchPlayDetails() {
         fetch(`/games/${gameId}/players/${playerId}`)
             .then(response => response.json())
             .then(player => {
                 fetch(`/games/${gameId}`)
                     .then(response => response.json())
-                .then(game => {
-                    title.textContent = `${player.name}@${game.name}`;
-                });
+                    .then(game => {
+                        title.textContent = `${player.name}@${game.name}`;
+                    });
 
             });
     }
@@ -35,7 +35,8 @@
             .then(response => response.json())
             .then(data => reponseReceived(data))
             .then(await new Promise(r => setTimeout(r, 2)))
-            .then(window.requestAnimationFrame(drawWorld));
+            .then(window.requestAnimationFrame(drawWorld))
+            .catch(() => location.pathname = '/');
     }
 
     var keyboardEventListener = function (event) {
