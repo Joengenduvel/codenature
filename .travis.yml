@@ -9,9 +9,7 @@ deploy:
   script: "docker push joengenduvel/codenature"
   skip_cleanup: true
   on:
-    branches:
-      only:
-        - "main"
+    branch: "main"
 
 before_install:
   - chmod +x mvnw
