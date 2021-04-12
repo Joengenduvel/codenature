@@ -1,23 +1,25 @@
 os: linux
 dist: xenial
 language: java
-
+services:
+- docker
 before_deploy:
-  - "./mvnw -B -V package"
-  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
-  - "docker build -t joengenduvel/codenature ."
+- "./mvnw -B -V package"
+- echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
+- docker build -t joengenduvel/codenature .
 deploy:
   provider: script
-  script: "docker push joengenduvel/codenature"
+  script: docker push joengenduvel/codenature
   on:
-    branch: "main"
-
+    branch: main
 before_install:
-  - chmod +x mvnw
-
+- chmod +x mvnw
 before_cache:
-  - rm -f  $HOME/.m2/
-
+- rm -f  $HOME/.m2/
 cache:
   directories:
-    - $HOME/.m2/
+  - "$HOME/.m2/"
+env:
+  global:
+  - secure: dI+P4rsq4H1iCAgP5ufSQZvc7niuH+4oLKdtnWeLQjj5iKHCGBVX5akGTU8D6SnKbGeiS+i8DexTq0khJJziZAfnJaj2zXyhoeSQIZDpuXhopwEgajaq1rwzvJrJd4mIPupA3Q2iBgiVVZN04KSgRRM6yRYnphm3TgsxFvjyeOxw7RqGVRYurJPbHZcKUzjkcKAmOI4i7YMJZUxR8khSno6JzmWIKcMJ6vSy9u5DH2YJOLcSgcSkBINWpcnmh1X39+L5f3dLC9g44WmiEvoyRfvymZ2FHbDSGn63MODKAouSde11QocmJrncSNsP98pY3ESyHKzv4wgzJ+fjp1ltH4SCKgcRuvHmZUEHP0zdJ4qjXHhv8IT3cM3HUBoGCeJ/Y9LkmZe/GYyz8Jqc6ELQHqaVpfshGgGdrKfq8YGW5ILQQ6yl+XwcY+pme/KzkdtgUSx+x1AGntnLLDzAdVIW7HJszvCGs2fMf+8qMmVyPLCsk4CQ9EdIBfIc/9MlNv3NwWkCXCpGE3FZAZ6r43ShmNq1ykqwGJEd5BIf53U4bGfGgKHehKGRs0dz8Q1Krvf1T3IzEoO8MiKR3XuIS5z21gIIiViX2ajto1VdpSn0mrtVHmKVRMf8yZ4UOf4LTHLrdLUOgFeAFlucqMMdlYIW1u4vcpXKK4n/RDRX+wEhmic=
+  - secure: exC+uAAZM+fF8NaL62lc+k9WxTKvPE0Y18leegdwm2KYZcXW11J29rRWNhyCWRcJx8XAXWG7e7jIKDecRyHDpKUwjPa48tdq8tgsJJeLIFNum9NHx2L8QUBSOJQw0GLDGlbbMf13QuUq6Rq3pNzUMUOFEGwHjZQxKmBZrdK5rwJ4XmeoxUuKubEdEMIv4+Iz/8Nu1+t8D6chigTZBK2B3RRrw8mBs1BvnqMUl3x2TC7VPiWhYjXE49T8/mBmmWT6GDD5cc2VFsg82rccUJXzaq0WychexMtuJGVhLmjor62GFDIGO4hj/99VMUFVUipl+AX8A8ZySmUw0rbxl9XX8i7hEsAbPMcC9BOByinrlc7kTac18YqXxSGyYqjk/0YwOU6RLwJbjTc9e6S4moen4kuqDjpNYKf4nXPdmFuvDs3HacIkxfHlP39nuFVXfRDlOTdHgMcVWhnvpGoyY90sydZx7zthvf4x5UFcJ+GK1TBkTQAd4fF4/VCmU8LBzBA5AVEjpkoRyKTOsc5HpX0QAUX9B6P07tngt8A3tqislGQllxY5oCHiivk7FhriJyM//w0as4Bh3mYcOlMkISzZ79jAyLGTjiaGGsND7NL6iFIISHDJHW5F9w6ZcJaY70x2nybGuUrjkYcr5/8ihZs8O010XsEnWixamYp+qiwuwHo=
