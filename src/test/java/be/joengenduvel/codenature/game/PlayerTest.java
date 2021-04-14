@@ -21,7 +21,8 @@ class PlayerTest {
         player.move(new KeyBinding(true, false, false, false));
         player.getSprite().move(0);
 
-        assertThat(player.getSprite().getSpeed()).isEqualTo(new Vector2D(1,1));
+        assertThat(player.getSprite().getSpeed()).isEqualTo(new Vector2D(1,0));
+        assertThat(player.getSprite().getAngle()).isEqualTo(Math.PI/180);
     }
 
     @Test
@@ -32,7 +33,8 @@ class PlayerTest {
         player.move(new KeyBinding(false, true, false, false));
         player.getSprite().move(0);
 
-        assertThat(player.getSprite().getSpeed()).isEqualTo(new Vector2D(1,-1));
+        assertThat(player.getSprite().getSpeed()).isEqualTo(new Vector2D(1,0));
+        assertThat(player.getSprite().getAngle()).isEqualTo(-Math.PI/180);
     }
 
     @Test
