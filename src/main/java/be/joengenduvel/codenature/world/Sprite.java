@@ -20,6 +20,7 @@ public class Sprite {
     private Vector2D speed;
     private Vector2D acceleration;
     private long mass;
+    private double angle;
 
     private List<Sprite> collidingWith;
 
@@ -38,6 +39,11 @@ public class Sprite {
     }
 
     public double getAngle() {
-        return speed.getAngle();
+        return angle;
+    }
+
+    public double rotate(double angle){
+        this.angle += angle;
+        return getAngle();
     }
 }

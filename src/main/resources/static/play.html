@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
     <title>play</title>
 </head>
@@ -29,6 +29,12 @@
             });
     }
 
+    function rotateCanvas(angle){
+        context.translate(canvas.width / 2, canvas.height / 2);
+        context.rotate(angle);
+        context.translate(-canvas.width / 2, -canvas.height / 2);
+    }
+
 
     async function drawWorld() {
         fetch(`/games/${gameId}/players/${playerId}/world`)
@@ -40,20 +46,15 @@
     }
 
     var keyboardEventListener = function (event) {
-        console.log(event.key);
         var keyBindings = {};
         if (event.key === 'ArrowUp') {
-            console.log('Up was pressed');
             keyBindings.up = true;
         } else if (event.key === 'ArrowDown') {
-            console.log('Down was pressed');
             keyBindings.down = true;
         }
         if (event.key === 'ArrowLeft') {
-            console.log('Left was pressed');
             keyBindings.left = true;
         } else if (event.key === 'ArrowRight') {
-            console.log('Right was pressed');
             keyBindings.right = true;
         }
         fetch(`/games/${gameId}/players/${playerId}`, {
@@ -67,7 +68,9 @@
 
     fetchPlayDetails();
     sizeCanvas();
+    rotateCanvas(Math.PI/2);
     drawWorld();
+
 </script>
 </body>
 </html>

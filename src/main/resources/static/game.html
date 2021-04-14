@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
     <title>Game</title>
 </head>
@@ -59,7 +59,7 @@
         fetch('/games/'+gameId+ '/world')
             .then(response => response.json())
             .then(data => reponseReceived(data))
-            .then(await new Promise(r => setTimeout(r, 2000)))
+            .then(await new Promise(r => setTimeout(r, 500)))
             .then(window.requestAnimationFrame(drawWorld))
             .catch(() => location.pathname = '/');
 

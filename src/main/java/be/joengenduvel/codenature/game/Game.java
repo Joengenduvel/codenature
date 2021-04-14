@@ -41,6 +41,7 @@ public class Game {
                         new Vector2D(players.size(), players.size()),
                         new Vector2D(0,0),
                         (long)(players.size()+1)*2,
+                        0,
                         new ArrayList<>()
                 )
         );

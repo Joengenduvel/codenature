@@ -20,15 +20,13 @@ public class LocalizedWorld implements World {
     }
 
     public List<Sprite> getSprites() {
-        return world.getSprites().stream().map(s ->{
-            return new Sprite(
-                    s.getPosition().substract(viewPosition).rotate(viewAngle).add(size.divide(2)),
-                    s.getSpeed().rotate(viewAngle),
-                    s.getAcceleration().rotate(viewAngle),
-                    s.getMass(),
-                    new ArrayList<>(0)
-            );
-
-                }).collect(Collectors.toList());
+        return world.getSprites().stream().map(s -> new Sprite(
+                s.getPosition().substract(viewPosition).rotate(viewAngle*-1).add(size.divide(2)),
+                s.getSpeed().rotate(viewAngle*-1),
+                s.getAcceleration().rotate(viewAngle*-1),
+                s.getMass(),
+                s.getAngle()-viewAngle,
+                new ArrayList<>(0)
+        )).collect(Collectors.toList());
     }
 }

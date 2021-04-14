@@ -58,6 +58,6 @@ class PlayerTest {
     }
 
     private Player getPlayer(Vector2D speed) {
-        return new Player(UUID.randomUUID(), "test", new Sprite(new Vector2D(0, 0), speed, new Vector2D(0,0), 0, new ArrayList<>()));
+        return new Player(UUID.randomUUID(), "test", new Sprite(new Vector2D(0, 0), speed, new Vector2D(0,0), 0, 0, new ArrayList<>()));
     }
 }

@@ -22,17 +22,17 @@ public class Player {
 
     public void move(KeyBinding keyBinding){
         int x =0,y = 0;
+        double rotationAngle = Math.PI/180;
 
         //map keys to force: 0 degrees = x-axis
         if(keyBinding.isDown()) x--;
         if(keyBinding.isUp()) x++;
-        if(keyBinding.isLeft()) y++;
-        if(keyBinding.isRight()) y--;
+        if(keyBinding.isLeft()) sprite.rotate(rotationAngle);
+        if(keyBinding.isRight()) sprite.rotate(rotationAngle*-1);
 
         Vector2D force = new Vector2D(x,y);
-        double movingAngle = sprite.getSpeed().getAngle();
+        double movingAngle = sprite.getAngle();
         force = force.rotate(movingAngle);
-        //TODO: normalize force
         sprite.applyForce(force.normalize());
     }
 }

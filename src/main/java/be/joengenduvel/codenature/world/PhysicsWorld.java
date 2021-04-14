@@ -39,6 +39,7 @@ public class PhysicsWorld implements World {
                 Vector2D.ZERO,
                 Vector2D.ZERO,
                 (long)10E11,
+                0,
                 new ArrayList<>()
         ));
     }
