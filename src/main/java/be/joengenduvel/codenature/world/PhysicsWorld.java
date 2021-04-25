@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PhysicsWorld implements World {
-    private static final Vector2D WORLD_SIZE = new Vector2D(300, 300);
+    private static final Vector2D WORLD_SIZE = new Vector2D(3000, 3000);
     private static final double SPEED_FACTOR = 0.05;
     private static final double GRAVITATIONAL_CONSTANT = 6.6743E-11;
 
@@ -83,7 +83,7 @@ public class PhysicsWorld implements World {
     }
 
     public World getLocalizedWorld(Sprite sprite){
-        return new LocalizedWorld(this, new Vector2D(300,300), sprite.getPosition(), sprite.getAngle());
+        return new LocalizedWorld(this, new Vector2D(600,600), sprite.getPosition(), sprite.getAngle());
     }
 
     private void wrapAroundCornersOfTheWorld(Sprite s) {
